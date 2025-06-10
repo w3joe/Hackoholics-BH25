@@ -6,7 +6,7 @@ import os
 EPISODES = 10   # Set number of episodes you want to train
 
 TRAINING_AGENT = 2 #Ranges from 0 to 3, where 0 is scout, 1 is bottom left guard, 2 is top right guard, 3 is bottom right guard
-SAVE_PATH = "human{TRAINING_AGENT}_demo.pkl"
+SAVE_PATH = "demos/human{TRAINING_AGENT}_demo.pkl"
 
 # === Load previous data if exists ===
 if os.path.exists(SAVE_PATH):
@@ -25,19 +25,13 @@ for ep in range(EPISODES):
     env.reset(seed=42)
     step = 0
     print(f"\n=== Episode {ep + 1} ===")
-    # if ep == 0:
-    #     env.reset(seed=42)
-    # env.reset(seed=42)
-    # env.reset(seed=42)
-    # env.reset(seed=42)
-    # env.reset(seed=42)
     for agent in env.agent_iter():
         observation, reward, termination, truncation, info = env.last()
 
         if termination or truncation:
             env.step(None)
         else:
-            if step % 4 == TRAINING_AGENT:
+            if (step - ep % 4) % 4 == TRAINING_AGENT:
                 keyboardInput = input("WASD? ")
                 def switch(keyboardInput):
                     if keyboardInput == "w":

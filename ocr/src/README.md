@@ -11,7 +11,7 @@ The core of the system is the `OCRManager` class — a single-image OCR pipeline
 
 - 🧠 **Tesseract OCR** (via PyTesseract)
 - 🖼️ **OpenCV** and **Pillow** for image decoding and resizing
-- ⚙️ Optional grayscale and Otsu binarization (**disabled for best results**)
+- ⚙️ Optional Otsu binarization (**disabled for best results**)
 - ⏱️ Timeout-based handling for unstable or slow inputs
 
 ---
@@ -39,6 +39,21 @@ I tested [OnnxOCR](https://github.com/jingsongliujing/OnnxOCR), which wraps Padd
 | PaddleOCR (ONNX)   | 0.98     | 0.30  |
 
 > Although PaddleOCR ONNX yielded higher accuracy, its runtime was far too slow for our competition constraints.
+
+---
+## ⚠️ Limitations of Tesseract OCR
+
+- **CPU-Only Processing:**  
+  Tesseract OCR runs purely on the CPU and does **not support GPU acceleration**. This limits its scalability for high-throughput or real-time applications compared to modern deep learning OCR engines.
+
+- **Performance Constraints:**  
+  While Tesseract achieves good accuracy on clean, printed text, its speed can degrade on larger images or complex layouts, impacting low-latency requirements.
+
+- **Limited Advanced Features:**  
+  Tesseract lacks some modern capabilities such as end-to-end text spotting and handwriting recognition.
+
+- **Parameter Sensitivity:**  
+  Proper configuration of page segmentation mode is critical to output quality. Without tuning, output text may lack spaces or have formatting issues requiring post-processing.
 
 ---
 

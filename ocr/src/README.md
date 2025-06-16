@@ -74,4 +74,6 @@ with open("sample.jpg", "rb") as f:
 text = ocr.ocr(image_bytes)
 print(text)
 
-
+````
+### Created by  
+Cheng Jia Yu :)

@@ -1,4 +1,4 @@
-# 🧾 OCRManager – Hackoholics BH25 (TIL-AI 2025 Surprise Challenge)
+# 🧾 OCRManager – Hackoholics BH25 (TIL-AI 2025 OCR Challenge)
 
 This repository contains a lightweight and optimized **OCR pipeline** built specifically for the **TIL-AI 2025 OCR Challenge**.  
 The goal is to extract clean text from document-style images, striking a strong balance between **accuracy** and **runtime speed** under constrained environments.

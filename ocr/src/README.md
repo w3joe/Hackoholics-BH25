@@ -31,9 +31,11 @@ The core of the system is the `OCRManager` class — a single-image OCR pipeline
 
 ## 🧪 PaddleOCR ONNX Experiment
 
-I tested [OnnxOCR](https://github.com/jingsongliujing/OnnxOCR), which wraps PaddleOCR with an ONNX backend.
+I also tried using [OnnxOCR](https://github.com/jingsongliujing/OnnxOCR), which wraps PaddleOCR with an ONNX backend.
 
-| OCR Engine         | Accuracy | Speed |
+Here are the respective scoring results by TIL Server:
+
+| OCR Engine         | Score | Speed |
 |--------------------|----------|-------|
 | Tesseract (Final)  | 0.94     | 0.73  |
 | PaddleOCR (ONNX)   | 0.98     | 0.30  |

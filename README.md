@@ -1,13 +1,66 @@
 # DSTA BrainHack TIL-AI 2025
 
-![Banner for TIL-AI](https://static.wixstatic.com/media/b03c31_bdb8962d37364d7c8cc3e6ae234bb172~mv2.png/v1/crop/x_0,y_1,w_3392,h_1453/fill/w_3310,h_1418,al_c,q_95,usm_0.66_1.00_0.01,enc_avif,quality_auto/Brainhack%20KV_v12_FOR_WEB.png)
+### Team: Hackoholics
 
-**Contents**
-- [DSTA BrainHack TIL-AI 2025](#dsta-brainhack-til-ai-2025)
+### 👥 Team Members
+
+| Name                                        | Role    |
+| ------------------------------------------- | ------- |
+| [richierx](https://github.com/richierx)     | RL, ASR |
+| [w3joe](https://github.com/w3joe)           | RL      |
+| [cjiayu03](https://github.com/cjiayu03)     | OCR     |
+| [electrum21](https://github.com/electrum21) | CV      |
+
+We managed to qualify with 13th place in the Novice category, but was defeated in the semi-finals.
+
+---
+
+## Contents
+
+- [Introduction](#introduction)
+  - [RL](#rl)
+  - [ASR](#asr)
+  - [OCR](#ocr)
+  - [CV](#cv)
   - [Get started](#get-started)
   - [Understanding this repo](#understanding-this-repo)
   - [Build, test, and submit](#build-test-and-submit)
-  - [Links](#links)
+
+## RL
+
+In a multi-agent environment, the Scout must navigate a dynamic map, avoid capture by the Guards, collect Recon Points, and complete challenges at fixed locations. Meanwhile, the Guards are trained to patrol and intercept the Scout efficiently.
+
+**Solution:**  
+We implemented a hybrid approach: supervised learning and imitation learning were used to teach the Scout to move strategically, while the Guards were trained using a CNN-based DQN agent with experience generated via BFS pathfinding.
+
+📄 [Read more about RL →](./rl/README.md)
+
+## ASR
+
+The challenge is to transcribe spoken content from noisy audio recordings. The model must handle speech under varying conditions and accurately produce a written transcript despite distortions or interference.
+
+**Solution:**  
+We fine-tuned OpenAI's Whisper Small model on domain-specific and noise-augmented data to improve transcription quality in adverse environments.
+
+📄 [Read more about ASR →](./asr/README.md)
+
+## OCR
+
+The goal is to extract structured text from images of scanned documents. These documents may contain varying fonts, alignments, and noise artifacts that reduce legibility.
+
+**Solution:**  
+We fine-tuned the Tesseract OCR engine on our dataset, optimizing preprocessing steps to improve character segmentation and recognition accuracy.
+
+📄 [Read more about OCR →](./ocr/README.md)
+
+## CV
+
+Detect and classify specific target objects within diverse images. Each image may contain multiple instances—or none—of the objects in question, requiring precise localization and accurate classification.
+
+**Solution:**  
+We employed strong data augmentation techniques and used RT-DETRv2-M (a real-time detection transformer) for fast and accurate object detection and classification.
+
+📄 [Read more about CV →](./cv/README.md)
 
 ## Get started
 
@@ -38,12 +91,12 @@ pip install -r requirements-dev.txt
 
 There's a subdirectory for each challenge: [`asr/`](/asr), [`cv/`](/cv), [`ocr/`](/ocr/), and [`rl/`](/rl). Each contains:
 
-* A `src/` directory, where your code lives.
-  * `*_manager.py`, which manages your model. This is where your inference and computation takes place.
-  * `*_server.py`, which runs a local web server that talks to the rest of the competition infrastructure.
-* `Dockerfile`, which is used to build your Docker image for each model.
-* `requirements.txt`, which lists the dependencies you need to have bundled into your Docker image.
-* `README.md`, which contains specifications for the format of each challenge.
+- A `src/` directory, where your code lives.
+  - `*_manager.py`, which manages your model. This is where your inference and computation takes place.
+  - `*_server.py`, which runs a local web server that talks to the rest of the competition infrastructure.
+- `Dockerfile`, which is used to build your Docker image for each model.
+- `requirements.txt`, which lists the dependencies you need to have bundled into your Docker image.
+- `README.md`, which contains specifications for the format of each challenge.
 
 You'll also find a final subdirectory, [`test/`](/test). This contains tools to test and score your model locally.
 
@@ -70,15 +123,3 @@ python test/test_CHALLENGE.py
 # Push it for submission
 til submit TEAM_ID-CHALLENGE:TAG
 ```
-
-## Links
-
-* The repo [Wiki](https://github.com/til-ai/til-25/wiki) contains tutorials, specifications, resources, and more.
-* Your [Vertex AI Workbench](https://console.cloud.google.com/vertex-ai/workbench/instances?project=til-ai-2025) on Google Cloud Platform is where you'll do most of your development.
-* The [Guardian's Handbook](https://tribegroup.notion.site/BrainHack-2025-TIL-AI-Guardian-s-Handbook-1885263ef45a80fdb547d0f22741a5ba) houses the Leaderboard and info about the competition.
-* [TIL-AI Curriculum](https://drive.google.com/drive/folders/18zP4pHt5E6YqA3usey16ETEzKNeAn5X9) on Google Drive contains educational materials specially crafted for TIL-AI.
-* The [#hackoverflow](https://discord.com/channels/1344138493357719573/1344204681110487068) channel on the TIL-AI Discord server is a forum just for Guardians like you.
-
----
-
-Code in this repo is licensed under the MIT License.

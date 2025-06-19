@@ -1,41 +1,81 @@
-# OCR
+# 🧾 OCRManager – Hackoholics BH25 (TIL-AI 2025 OCR Challenge)
 
-Your OCR challenge is to read text in a scanned document.
+This repository contains a lightweight and optimized **OCR pipeline** built specifically for the **TIL-AI 2025 OCR Challenge**.  
+The goal is to extract clean text from document-style images, striking a strong balance between **accuracy** and **runtime speed** under constrained environments.
 
-This Readme provides a brief overview of the interface format; see the Wiki for the full [challenge specifications](https://github.com/til-ai/til-25/wiki/Challenge-specifications).
+---
 
-## Input
+## 🛠️ Overview
 
-The input is sent via a POST request to the `/ocr` route on port 5003. It is a JSON document structured as such:
+The core of the system is the `OCRManager` class — a single-image OCR pipeline utilizing:
 
-```JSON
-{
-  "instances": [
-    {
-      "key": 0,
-      "b64": "BASE64_ENCODED_IMAGE"
-    },
-    ...
-  ]
-}
-```
+- 🧠 **Tesseract OCR** (via PyTesseract)
+- 🖼️ **OpenCV** and **Pillow** for image decoding and resizing
+- ⚙️ Optional Otsu binarization (**disabled for best results**)
+- ⏱️ Timeout-based handling for unstable or slow inputs
 
-The `b64` key of each object in the `instances` list contains the base64-encoded bytes of the input image in JPEG format. The length of the `instances` list is variable.
+---
 
-## Output
+## 🔍 Key Decisions & Optimizations
 
-Your route handler function must return a `dict` with this structure:
+### ✅ Final Configuration
 
-```Python
-{
-    "predictions": [
-        "Predicted transcript one.",
-        "Predicted transcript two.",
-        ...
-    ]
-}
-```
+| Component         | Setting                                  | Reason                                         |
+|------------------|------------------------------------------|------------------------------------------------|
+| Binarization      | ❌ **Disabled**                           | Reduced both speed and accuracy                |
+| Image Resizing    | ✅ **Max dimension: 960px**               | Optimal trade-off between accuracy and speed   |
+| Inference Mode    | ✅ **Single-image only**                  | Better control on memory and speed             |
+| Tesseract Config  | `--oem 3 --psm 6`                         | Best mode for printed block-style text         |
 
-where each string in `predictions` is the predicted OCR transcription for the corresponding audio file.
+---
 
-The $k$-th element of `predictions` must be the prediction corresponding to the $k$-th element of `instances` for all $1 \le k \le n$, where n is the number of input instances. The length of `predictions` must equal that of `instances`.
+## 🧪 PaddleOCR ONNX Experiment
+
+I also tried using [OnnxOCR](https://github.com/jingsongliujing/OnnxOCR), which wraps PaddleOCR with an ONNX backend.
+
+Here are the respective scoring results by TIL Server:
+
+| OCR Engine         | Score | Speed |
+|--------------------|----------|-------|
+| Tesseract (Final)  | 0.94     | 0.73  |
+| PaddleOCR (ONNX)   | 0.98     | 0.30  |
+
+> Although PaddleOCR ONNX yielded higher accuracy, its runtime was far too slow for our competition constraints.
+
+---
+## ⚠️ Limitations of Tesseract OCR
+
+- **CPU-Only Processing:**  
+  Tesseract OCR runs purely on the CPU and does **not support GPU acceleration**. This limits its scalability for high-throughput or real-time applications compared to modern deep learning OCR engines.
+
+- **Performance Constraints:**  
+  While Tesseract achieves good accuracy on clean, printed text, its speed can degrade on larger images or complex layouts, impacting low-latency requirements.
+
+- **Limited Advanced Features:**  
+  Tesseract lacks some modern capabilities such as end-to-end text spotting and handwriting recognition.
+
+- **Parameter Sensitivity:**  
+  Proper configuration of page segmentation mode is critical to output quality. Without tuning, output text may lack spaces or have formatting issues requiring post-processing.
+
+---
+
+## 🚀 Usage Example
+
+Minimal usage to run OCR on a single image:
+
+```python
+from ocr_manager import OCRManager
+
+# Initialize the OCR engine (binarization disabled for optimal accuracy/speed)
+ocr = OCRManager(binarize=False)
+
+# Read image and perform OCR
+with open("sample.jpg", "rb") as f:
+    image_bytes = f.read()
+
+text = ocr.ocr(image_bytes)
+print(text)
+
+````
+### Created by  
+Cheng Jia Yu :)
